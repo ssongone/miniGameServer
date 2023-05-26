@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.packet.LocationPacket;
 import org.example.packet.Packet;
 import org.example.packet.UserNamePacket;
 
@@ -14,11 +15,12 @@ public class PacketHandler {
 
     Map<Integer, Packet> map = new HashMap<>();
     UserNamePacket userNamePacket = new UserNamePacket();
+    LocationPacket locationPacket = new LocationPacket();
 
     public PacketHandler(Game game) {
         this.game = game;
         map.put(1, userNamePacket);
-
+        map.put(2, locationPacket);
     }
 
     public void processBuff(User user, ByteBuffer buffer) {
