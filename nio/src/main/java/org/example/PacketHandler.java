@@ -14,11 +14,13 @@ public class PacketHandler {
     private final Game game;
 
     Map<Integer, Packet> map = new HashMap<>();
-    UserNamePacket userNamePacket = new UserNamePacket();
-    LocationPacket locationPacket = new LocationPacket();
+    UserNamePacket userNamePacket;
+    LocationPacket locationPacket;
 
     public PacketHandler(Game game) {
         this.game = game;
+        userNamePacket = new UserNamePacket(game);
+        locationPacket = new LocationPacket(game);
         map.put(1, userNamePacket);
         map.put(2, locationPacket);
     }

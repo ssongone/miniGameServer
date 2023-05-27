@@ -1,11 +1,16 @@
 package org.example.packet;
 
+import org.example.Game;
 import org.example.User;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 public class LocationPacket implements Packet{
+    private final Game game;
+
+    public LocationPacket(Game game) {
+        this.game = game;
+    }
+
     @Override
     public void readBody(User user, String body) {
 
@@ -16,6 +21,14 @@ public class LocationPacket implements Packet{
         int nowY = Integer.parseInt(location[1]);
         user.setX(nowX);
         user.setY(nowY);
+        checkLocation(user);
+
         System.out.println(user);
+    }
+
+    private void checkLocation(User user) {
+        int before = user.getLocation();
+        if (before != user.setLocation(user.getX(), user.getY()))
+            game.movePlayer(user, before, user.getLocation());
     }
 }
