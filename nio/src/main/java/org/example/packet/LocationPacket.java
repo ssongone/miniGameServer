@@ -13,22 +13,17 @@ public class LocationPacket implements Packet{
 
     @Override
     public void readBody(User user, String body) {
-
-        System.out.println(body);
-
         String[] location = body.split(",");
         int nowX = Integer.parseInt(location[0]);
+        System.out.println("nowX = " + nowX);
         int nowY = Integer.parseInt(location[1]);
+        System.out.println("nowY = " + nowY);
         user.setX(nowX);
         user.setY(nowY);
-        checkLocation(user);
 
-        System.out.println(user);
-    }
-
-    private void checkLocation(User user) {
         int before = user.getLocation();
-        if (before != user.setLocation(user.getX(), user.getY()))
-            game.movePlayer(user, before, user.getLocation());
+        int now =  user.setLocation(user.getX(), user.getY());
+        game.movePlayer(user, before, now);
     }
+
 }

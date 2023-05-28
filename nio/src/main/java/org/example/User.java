@@ -10,7 +10,7 @@ import java.nio.channels.SocketChannel;
 public class User {
     private SocketChannel socketChannel;
     private String name;
-    private int location;
+    private int location = 21;
     private int x = 0, y = 0;
 
     public User(SocketChannel socketChannel) {
