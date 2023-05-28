@@ -88,8 +88,8 @@ public class NioServer {
         if (bytesRead > 0) {
             log.info("message received");
             User user = users.get(clientChannel);
-            packetHandler.processBuff(user, buffer);
-            //executorService.execute(() -> packetHandler.processBuff(user, buffer));
+            //packetHandler.processBuff(user, buffer);
+            executorService.execute(() -> packetHandler.processBuff(user, buffer));
         }
     }
 
