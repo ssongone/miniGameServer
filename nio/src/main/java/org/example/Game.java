@@ -1,5 +1,6 @@
 package org.example;
 
+
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -13,11 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class Game {
     private static int MAP_SIZE = 36;
-    //private Selector selector;
     Map<Integer, List<User>> map = new ConcurrentHashMap<>();
 
     public Game() {
-        //this.selector = selector;
         for (int i = 0 ; i < MAP_SIZE ; i++) {
             map.put(i, new ArrayList<>());
         }
@@ -28,24 +27,38 @@ public class Game {
         playerList.add(user);
         log.info("현재 같은 맵에 있는 사람들 : {}", playerList);
 
+        try {
+            broadcastMessage(location);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void movePlayer(User user, int before, int now) {
-        map.get(before).remove(user);
-        map.get(now).add(user);
-        log.info("전 맵에 있는 사람들 : {}", map.get(before));
-        log.info("현재 같은 맵에 있는 사람들 : {}", map.get(now));
+        if (before != now) {
+            map.get(before).remove(user);
+            map.get(now).add(user);
+            log.info("before 맵 {}  : {}", before, map.get(before));
+            log.info("now 맵 {} : {}", now, map.get(now));
+        }
+
+        try {
+            broadcastMessage(now);
+            broadcastMessage(before);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
     public void broadcastMessage(int location) throws IOException {
+        log.info("broadcastMessage()");
         List<User> Users = map.get(location);
         String message = "현재 같은 맵에 있는 사람은 : ";
         for (User user : Users) {
-            message += (user.getName() + ", ");
+            message += (user.getName() + "(" + user.getX() + ", " + user.getY() + ") ");
         }
-
-        ByteBuffer buffer = ByteBuffer.wrap(message.getBytes());
+        ByteBuffer buffer = ByteBuffer.wrap(message.getBytes("UTF-8"));
 
         for (User user : Users) {
             SocketChannel clientChannel = user.getSocketChannel();
@@ -53,9 +66,5 @@ public class Game {
             buffer.rewind();
         }
     }
-
-
-
-    
 
 }
