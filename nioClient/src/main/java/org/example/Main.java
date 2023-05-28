@@ -32,6 +32,18 @@ public class Main {
                 buffer.put(byteBody);
                 buffer.flip();
                 socketChannel.write(buffer);
+
+                ByteBuffer input = ByteBuffer.allocate(1024);
+                int bytesRead = socketChannel.read(input);
+
+                if (bytesRead > 0) {
+                    input.flip();
+                    byte[] receivedData = new byte[bytesRead];
+                    input.get(receivedData);
+                    String response = new String(receivedData, "UTF-8");
+                    System.out.println("서버 응답: " + response);
+                }
+
             }
 
             // 소켓 채널 닫기
