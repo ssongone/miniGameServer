@@ -19,8 +19,12 @@ public class User {
     }
 
     public int setLocation(int x, int y) {
-        int nowX = (x / 50) + 3;
-        int nowY = (y / 50) + 3;
+        int nowX = (x / 50) + 2;
+        int nowY = (y / 50) + 2;
+        if (x > 0)
+            nowX++;
+        if (y > 0)
+            nowY++;
         int nowLocation = (nowY * 6) + nowX;
         this.location = nowLocation;
         return nowLocation;

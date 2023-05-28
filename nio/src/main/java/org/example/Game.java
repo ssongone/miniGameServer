@@ -34,20 +34,16 @@ public class Game {
         }
     }
 
-    public void movePlayer(User user, int before, int now) {
+    public void movePlayer(User user, int before, int now) throws IOException {
         if (before != now) {
             map.get(before).remove(user);
             map.get(now).add(user);
             log.info("before 맵 {}  : {}", before, map.get(before));
             log.info("now 맵 {} : {}", now, map.get(now));
+            broadcastMessage(before);
         }
 
-        try {
-            broadcastMessage(now);
-            broadcastMessage(before);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        broadcastMessage(now);
     }
 
 
